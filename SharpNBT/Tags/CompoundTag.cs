@@ -104,7 +104,10 @@ public class CompoundTag : Tag, IDictionary<string, Tag>, ICollection<Tag>
     public void Add(string key, Tag value) => dict.Add(key, ValidateChild(value));
     
     /// <inheritdoc cref="ICollection{T}.Add"/>
-    public void Add(Tag value) => dict.Add(value.Name!, ValidateChild(value));
+    public void Add(Tag value)
+    {
+        if (value.Name != null) dict.Add(value.Name!, ValidateChild(value));
+    }
 
     /// <inheritdoc />
     public bool ContainsKey(string key) => dict.ContainsKey(key);
@@ -277,8 +280,8 @@ public class CompoundTag : Tag, IDictionary<string, Tag>, ICollection<Tag>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private Tag ValidateChild(Tag tag)
     {
-        if (string.IsNullOrWhiteSpace(tag.Name))
-            throw new FormatException(Strings.ChildrenMustBeNamed);
+        //if (string.IsNullOrWhiteSpace(tag.Name))
+            //throw new FormatException(Strings.ChildrenMustBeNamed);
         tag.Parent = this;
         return tag;
     }
